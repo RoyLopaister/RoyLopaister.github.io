@@ -1,195 +1,210 @@
-<!doctype html>
-<html style="height: 100%;"lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#" class="no-js">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Roy</title>
-	<!-- <link rel="shortcut icon" href="https://learncodeweb.com/demo/favicon.ico"> -->
-	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
-	<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"> -->
-	<!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
-	<script>
-	  (adsbygoogle = window.adsbygoogle || []).push({
-		google_ad_client: "ca-pub-6724419004010752",
-		enable_page_level_ads: true
-	  });
-	</script>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131906273-1"></script>
-	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	  gtag('config', 'UA-131906273-1');
-	</script>
-	<style>
-		.button {
-              background-color:gray; /* Green */
-              border: none;
-              color: white;
-              padding: 10px 20px;
-              text-align: center;
-              text-decoration: none;
-              display: inline-block;
-              font-size: 20px;
-              border-radius: 25px;
-              margin: 0px;
-			  width: 100%;
-            }
-		.occ{
-			
-		}
-	</style>
-</head>
+<!--
+ Your First PWA Codelab (https://g.co/codelabs/pwa)
 
-<body style="height: 100%; margin: 0px; background-color: rgb(17, 17, 17);">
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-	<div  style="background-color: black; "align="center">
-		<h1 style=" color: white; display: inline-block;"onclick="restart()" >SEAL</h1>
-	 </div>
-	<div  class="container-fluid">	
-			<div >
-				<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-				<div>
-					<video id="preview" style="display:none;width:100%; height: 100%"></video>
-					<button id = "openc" class="button" style="background-color:black;display:block;padding: 0px; "onclick="opencamera()">開啟相機</button>
-					<button id = "closec" class="button" style="background-color:black;display:none;padding: 0px;"onclick="closecamera()">關閉相機</button>
-				</div>
-			</div>
-			 <button id = "led" class="button" style="padding: 0px; font-size: 50px;">今日體溫</button> 
-	</div>
-	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-	<script type="text/javascript">
-		function restart(){
-			i.innerHTML="今日體溫";
-			i.style.backgroundColor='gray';
-		}
-		var i= document.getElementById('led');
-		function okay(temp){
-			i.style.backgroundColor='green';
-			i.innerHTML=temp;
-		}
-		function nono(temp){
-			i.style.backgroundColor='red';
-			i.innerHTML=temp;
-		}
-		function closecamera(){
-			document.getElementById('preview').style.display="none";
-			document.getElementById('openc').style.display="block";
-			document.getElementById('closec').style.display="none";
-		}
-		function opencamera(){
-			document.getElementById('preview').style.display="block";
-			document.getElementById('openc').style.display="none";
-			document.getElementById('closec').style.display="block";
-			var scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5, mirror: true });
-			scanner.addListener('scan',function(content){
-				// alert(content);
-				if(content>38){
-					nono(content);
-				}else{
-					okay(content);
-				}	
-				//window.location.href=content;
-				});
-				Instascan.Camera.getCameras().then(function (cameras){
-					if(cameras.length>0){
-						scanner.start(cameras[0]);
-						$('[name="options"]').on('change',function(){
-							if($(this).val()==1){
-								if(cameras[0]!=""){
-									scanner.start(cameras[0]);
-								}else{
-									alert('No Front camera found!');
-								}
-							}else if($(this).val()==2){
-								if(cameras[1]!=""){
-									scanner.start(cameras[1]);
-								}else{
-									alert('No Back camera found!');
-								}
-							}
-						});
-					}else{
-						console.error('No cameras found.');
-						alert('No cameras found.');
-					}
-				}).catch(function(e){
-					console.error(e);
-					alert(e);
-				});
-		}
-		Highcharts.chart('container', {
-			chart: {
-			backgroundColor: 'black',
-				type: 'area',
-				zoomType: 'x'
-			},
-			data: {
-				// enablePolling: true,
-				// csvURL: window.location.origin + '/data.csv'
-				data:[35.7,40]
-			},
-			title: {
-				text: 'Your PPG Data',
-				color: '#000000'
-			},
-			xAxis:{
-			type: 'number',
-			},
-			yAxis: {
-			gridLineColor: '#979797',
-			gridLineWidth:0,
-				title: {
-				text: 'Value'
-				}
-			},
-			plotOptions: {
-			area: {
-					fillColor: {
-					linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-					stops: [
-						[0, Highcharts.getOptions().colors[0]],
-						[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-					]
-					},
-					marker: {
-					radius: 2
-					},
-					lineWidth: 1,
-					states: {
-					hover: {
-						lineWidth: 1
-					}
-					},
-					threshold: null
-					
-				}
-			}
-		});
-		</script>
-		<!-- <div class="col-sm-3">
-			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-			demo left sidebar
-			<ins class="adsbygoogle"
-				 style="display:block"
-				 data-ad-client="ca-pub-6724419004010752"
-				 data-ad-slot="7706376079"
-				 data-ad-format="auto"
-				 data-full-width-responsive="true"></ins>
-			<script>
-			(adsbygoogle = window.adsbygoogle || []).push({});
-			</script>
-		</div> -->
-			<!-- <div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
-			<label class="btn btn-primary active">
-				<input type="button" name="options" value="1" autocomplete="off" checked> Front Camera
-			</label>
-			<label class="btn btn-secondary">
-				<input type="button" name="options" value="2" autocomplete="off"> Back Camera
-			</label>
-			</div> -->
+ Copyright 2019 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather PWA</title>
+  <meta name="codelab" content="your-first-pwa-v3">
+  <link rel="stylesheet" type="text/css" href="/styles/inline.css">
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+
+  <!-- CODELAB: Add link rel manifest -->
+  <!-- CODELAB: Add iOS meta tags and icons -->
+  <!-- CODELAB: Add description here -->
+  <!-- CODELAB: Add meta theme-color -->
+
+</head>
+<body>
+
+  <header class="header">
+    <h1>
+      Weather PWA
+      <a href="https://darksky.net/poweredby/" class="powered-by">
+        Powered by Dark Sky
+      </a>
+    </h1>
+    <button id="butInstall" aria-label="Install" hidden></button>
+    <button id="butRefresh" aria-label="Refresh"></button>
+  </header>
+
+  <main class="main">
+
+    <button id="butAdd" class="fab" aria-label="Add">
+      <span class="icon add"></span>
+    </button>
+
+    <div id="about" class="weather-card">
+      <b>Your First Progressive Web App Codelab</b><br>
+      Get started at <a href="https://g.co/codelabs/pwa">https://g.co/codelabs/pwa</a>.
+    </div>
+
+    <div id="weather-template" class="weather-card" hidden>
+      <div class="card-spinner">
+        <svg viewBox="0 0 32 32" width="32" height="32">
+          <circle cx="16" cy="16" r="14" fill="none"></circle>
+        </svg>
+      </div>
+      <button class="remove-city">&times;</button>
+      <div class="city-key" hidden></div>
+      <div class="card-last-updated" hidden></div>
+      <div class="location">&nbsp;</div>
+      <div class="date">&nbsp;</div>
+      <div class="description">&nbsp;</div>
+      <div class="current">
+        <div class="visual">
+          <div class="icon"></div>
+          <div class="temperature">
+            <span class="value"></span><span class="scale">°F</span>
+          </div>
+        </div>
+        <div class="description">
+          <div class="humidity">
+            <span class="label">Humidity:</span>
+            <span class="value"></span><span class="scale">%</span>
+          </div>
+          <div class="wind">
+            <span class="label">Wind:</span>
+            <span class="value"></span>
+            <span class="scale">mph</span>
+            <span class="direction"></span>°
+          </div>
+          <div class="sunrise">
+            <span class="label">Sunrise:</span>
+            <span class="value"></span>
+          </div>
+          <div class="sunset">
+              <span class="label">Sunset:</span>
+              <span class="value"></span>
+            </div>
+        </div>
+      </div>
+      <div class="future">
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="addDialogContainer">
+    <div class="dialog">
+      <div class="dialog-title">Add new city</div>
+      <div class="dialog-body">
+        <select id="selectCityToAdd" aria-label="City to add">
+          <!--
+            Values are lat/lon values, use Google Maps to find and add
+            additional cities.
+          -->
+          <option value="28.6472799,76.8130727">Dehli, India</option>
+          <option value="-5.7759362,106.1174957">Jakarta, Indonesia</option>
+          <option value="51.5287718,-0.2416815">London, UK</option>
+          <option value="40.6976701,-74.2598666">New York, USA</option>
+          <option value="48.8589507,2.2770202">Paris, France</option>
+          <option value="-64.8251018,-63.496847">Port Lockroy, Antarctica</option>
+          <option value="37.757815,-122.5076401">San Francisco, USA</option>
+          <option value="31.2243085,120.9162955">Shanghai, China</option>
+          <option value="35.6735408,139.5703032">Tokyo, Japan</option>
+        </select>
+      </div>
+      <div class="dialog-buttons">
+        <button id="butDialogCancel" class="button">Cancel</button>
+        <button id="butDialogAdd" class="button">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/luxon-1.11.4.js"></script>
+  <script src="/scripts/app.js"></script>
+  <!-- CODELAB: Add the install script here -->
+  <script>
+    // CODELAB: Register service worker.
+  </script>
+
 </body>
 </html>
